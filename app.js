@@ -1,13 +1,16 @@
 document.addEventListener('DOMContentLoaded', () => {
+	// Collect info from html/css
 	const grid = document.querySelector('.grid');
-	let squares = Array.from(document.querySelectorAll('.grid div'));
+	let boardSquares = Array.from(document.querySelectorAll('.grid div'));
 	const ScoreDisplay = document.querySelector('#score');
 	const StartBtn = document.querySelector('#start-button');
+	
+	// Default value
 	const width = 10;
 	
-	//console.log(squares);
+	//console.log(boardSquares);
 	
-	// Tetromino
+	// Tetrominos
 	const lTetrimino = [
 		[1, width+ 1, width * 2 + 1, 2],
 		[width, width + 1, width + 2, width * 2 + 2],
@@ -29,6 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	[1, width, width + 1, width * 2 + 1]
 	]
 	
+	// square shape
 	const oTetromino = [
 	[0, 1, width, width + 1],
 	[0, 1, width, width + 1],
@@ -46,26 +50,61 @@ document.addEventListener('DOMContentLoaded', () => {
 	
 	const theTetrominos = [lTetrimino, zTetromino, tTetromino, oTetromino, iTetromino];
 	
-	let currentPosition = 2;
-	let currentRotation = 0;
+	// currentTetromino position in the array (of 0-199 of the game board, width is 10, so 10x20)
+	// row depends on /10 and the position is % 10.
+	let currentTetrominoPosition = 4;
+	let currentTetrominoRotation = 0;
 	
+	// Random shapes are the core of Tetris...
 	let random = Math.floor(Math.random() * theTetrominos.length);
 	
-	let current = theTetrominos[random][currentRotation];
-	//console.log(current);
+	let currentTetromino = theTetrominos[random][currentTetrominoRotation];
+	//console.log(currentTetromino);
 	
 	// draw first rotation in tetromino
 	function draw(){
-		current.forEach(index => {
-			squares[currentPosition + index].classList.add('tetromino');
+		currentTetromino.forEach(index => {
+			boardSquares[currentTetrominoPosition + index].classList.add('tetromino');
 		})
 	}
 	
+	// Get rid of the previously drawn Tetromino.
 	function undraw(){
-		current.forEach(index => {
-			squares[currentPosition + index].classList.remove('tetromino');
+		currentTetromino.forEach(index => {
+			boardSquares[currentTetrominoPosition + index].classList.remove('tetromino');
 		})
 	}
 	
-	draw();
+	// Make Tetrominmos move down every second.
+	//timerId = setInterval(moveDown, 1000);
+	
+	function moveDown(){
+		undraw();
+		// This will move the tetromino down. Since the width is 10 in this case (right now anyway), this will move down.
+		currentTetrominoPosition += width;
+		draw();
+		freeze();
+	}
+	//draw();
+
+	function freeze() {
+		if(currentTetromino.some(index => boardSquares[currentTetrominoPosition + index + width].classList.contains('taken')))
+		{
+			currentTetromino.forEach(index => boardSquares[currentTetrominoPosition + index].classList.add('taken'));
+			random = Math.floor(Math.random() * theTetrominos.length);
+			currentTetromino = theTetrominos[random][currentTetrominoRotation];
+			currentTetrominoPosition = 4;
+			draw();
+		}
+	}
+	
+	function getcurrentTetrominoPos()
+	{
+		
+	}
 })
+
+
+
+
+
