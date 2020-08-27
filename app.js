@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	const width = 10;
 	let nextRandom = 0;
 	let timerId;
+	let score = 0;
 	
 	//console.log(boardSquares);
 	
@@ -113,6 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			currentTetrominoPosition = 4;
 			draw();
 			displayShape();
+			addScore();
 		}
 	}
 	
@@ -249,6 +251,30 @@ document.addEventListener('DOMContentLoaded', () => {
 			displayShape();
 		}
 	}
+	
+	function addScore()
+	{
+		for(let i = 0; i < 199; i += width)
+		{
+			const row = [];
+			for(let j = 0; j < 10; j++)
+			{
+				row.push(i + j);
+			}
+			if(row.every(index => boardSquares[index].classList.contains('taken')))
+			{
+				score += 10;
+				scoreDisplay.innerHTML = score;
+				row.forEach(index => {
+					boardSquares[index].classList.remove('taken');
+				})
+				const squaresRemoved = boardSquares.splice(i, width);
+				console.log(score);
+			}
+			//const row = [i, i]
+		}
+	}
+	
 });
 
 
