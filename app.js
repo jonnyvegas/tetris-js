@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	
 	// Default value
 	const width = 10;
+	let nextRandom = 0;
 	
 	//console.log(boardSquares);
 	
@@ -202,7 +203,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	}
 	
 	// Next up Tetromino
-	const dispplaySquares = document.querySelectorAll('.mini-grid div');
+	const displaySquares = document.querySelectorAll('.mini-grid div');
 	const displayWidth = 4;
 	let displayIndex = 0;
 	
@@ -210,7 +211,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	const upNextTetrominos = 
 	[
 		[1, displayWidth+ 1, displayWidth * 2 + 1, 2],
-		[0, width, width + 1, displayWidth * 2 + 1],
+		[0, displayWidth, displayWidth + 1, displayWidth * 2 + 1],
 		[1, displayWidth, displayWidth+ 1, displayWidth+ 2],
 		[0, 1, displayWidth, displayWidth+ 1],
 		[1, displayWidth+ 1, displayWidth* 2 + 1, displayWidth* 3 + 1]
@@ -225,7 +226,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		})
 		upNextTetrominos[nextRandom].forEach(index => {
 			displaySquares[displayIndex + index].classList.add('tetromino');
-		};
+		});
 	}
 })
 
