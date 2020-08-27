@@ -5,46 +5,53 @@ document.addEventListener('DOMContentLoaded', () => {
 	const ScoreDisplay = document.querySelector('#score');
 	const StartBtn = document.querySelector('#start-button');
 	
+	document.addEventListener('keydown', handleInput);
+	
 	// Default value
 	const width = 10;
 	
 	//console.log(boardSquares);
 	
 	// Tetrominos
-	const lTetrimino = [
+	const lTetrimino = 
+	[
 		[1, width+ 1, width * 2 + 1, 2],
 		[width, width + 1, width + 2, width * 2 + 2],
 		[1, width + 1, width * 2 + 1, width * 2],
 		[width, width * 2, width * 2 + 1, width*2+2]
 	]
 	
-	const zTetromino = [
-	[0, width, width + 1, width * 2 + 1],
-	[width + 1, width + 2, width * 2, width * 2 + 1],
-	[0, width, width + 1, width * 2 + 1],
-	[width + 1, width + 2, width * 2, width * 2 + 1]
+	const zTetromino = 
+	[
+		[0, width, width + 1, width * 2 + 1],
+		[width + 1, width + 2, width * 2, width * 2 + 1],
+		[0, width, width + 1, width * 2 + 1],
+		[width + 1, width + 2, width * 2, width * 2 + 1]
 	]
 	
-	const tTetromino = [
-	[1, width, width + 1, width + 2],
-	[1, width + 1, width + 2, width * 2 + 1],
-	[width, width + 1, width + 2, width * 2 + 1],
-	[1, width, width + 1, width * 2 + 1]
+	const tTetromino = 
+	[
+		[1, width, width + 1, width + 2],
+		[1, width + 1, width + 2, width * 2 + 1],
+		[width, width + 1, width + 2, width * 2 + 1],
+		[1, width, width + 1, width * 2 + 1]
 	]
 	
 	// square shape
-	const oTetromino = [
-	[0, 1, width, width + 1],
-	[0, 1, width, width + 1],
-	[0, 1, width, width + 1],
-	[0, 1, width, width + 1]
+	const oTetromino = 
+	[
+		[0, 1, width, width + 1],
+		[0, 1, width, width + 1],
+		[0, 1, width, width + 1],
+		[0, 1, width, width + 1]
 	]
 	
-	const iTetromino = [
-	[1, width + 1, width * 2 + 1, width * 3 + 1],
-	[width, width + 1, width + 2, width + 3],
-	[1, width + 1, width * 2 + 1, width * 3 + 1],
-	[width, width + 1, width + 2, width + 3]
+	const iTetromino = 
+	[
+		[1, width + 1, width * 2 + 1, width * 3 + 1],
+		[width, width + 1, width + 2, width + 3],
+		[1, width + 1, width * 2 + 1, width * 3 + 1],
+		[width, width + 1, width + 2, width + 3]
 	]
 	
 	
@@ -62,23 +69,27 @@ document.addEventListener('DOMContentLoaded', () => {
 	//console.log(currentTetromino);
 	
 	// draw first rotation in tetromino
-	function draw(){
-		currentTetromino.forEach(index => {
+	function draw()
+	{
+		currentTetromino.forEach(index => 
+		{
 			boardSquares[currentTetrominoPosition + index].classList.add('tetromino');
 		})
 	}
 	
 	// Get rid of the previously drawn Tetromino.
-	function undraw(){
+	function undraw()
+	{
 		currentTetromino.forEach(index => {
 			boardSquares[currentTetrominoPosition + index].classList.remove('tetromino');
 		})
 	}
 	
 	// Make Tetrominmos move down every second.
-	//timerId = setInterval(moveDown, 1000);
+	timerId = setInterval(moveDown, 1000);
 	
-	function moveDown(){
+	function moveDown()
+	{
 		undraw();
 		// This will move the tetromino down. Since the width is 10 in this case (right now anyway), this will move down.
 		currentTetrominoPosition += width;
@@ -87,7 +98,8 @@ document.addEventListener('DOMContentLoaded', () => {
 	}
 	//draw();
 
-	function freeze() {
+	function freeze() 
+	{
 		if(currentTetromino.some(index => boardSquares[currentTetrominoPosition + index + width].classList.contains('taken')))
 		{
 			currentTetromino.forEach(index => boardSquares[currentTetrominoPosition + index].classList.add('taken'));
@@ -98,11 +110,88 @@ document.addEventListener('DOMContentLoaded', () => {
 		}
 	}
 	
-	function getcurrentTetrominoPos()
+	
+	function moveLeft(bLeft)
 	{
-		
+		undraw();
+		var numToCheck = 0;
+		if(bLeft)
+		{
+			numToCheck = 0;
+		}
+		else
+		{
+			numToCheck = 9;
+		}
+		const isAtEdge = currentTetromino.some(index => (currentTetrominoPosition + index) % width === numToCheck);
+		if(!isAtEdge && bLeft)
+		{
+			currentTetrominoPosition -= 1;
+		}
+		else if(!isAtEdge && !bLeft)
+		{
+			currentTetrominoPosition += 1;
+		}
+		if(currentTetromino.some(index => boardSquares[currentTetrominoPosition + index].classList.contains("taken")))
+		{
+			if(bLeft)
+			{
+				currentTetrominoPosition += 1;
+			}
+			else
+			{
+				currentTetrominoPosition -= 1;
+			}
+		}
+		draw();
+		// Previous working move left code. Changed to accomodate L/R without dupication.
+		/* undraw();
+		const isAtEdge = currentTetromino.some(index => (currentTetrominoPosition + index) % width === 0)
+		if(!isAtEdge)
+		{
+			currentTetrominoPosition -= 1;
+			console.log(currentTetrominoPosition);
+		}
+		if(currentTetromino.some(index => boardSquares[currentTetrominoPosition + index].classList.contains('taken')))
+		{
+			currentTetrominoPosition += 1;
+		}
+		draw(); */
+	}
+
+	
+	
+	function handleInput(e)
+	{
+		// left is 37, right is 39
+		if(e.keyCode === 37)
+		{
+			moveLeft(true);
+		}
+		// Move right, not left.
+		else if(e.keyCode === 39)
+		{
+			moveLeft(false);
+		}
+		else if(e.keyCode === 40)
+		{
+			// speed up the process.
+		}
 	}
 })
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
