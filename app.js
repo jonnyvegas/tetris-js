@@ -121,7 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		}
 		else
 		{
-			numToCheck = 9;
+			numToCheck = width - 1;
 		}
 		const isAtEdge = currentTetromino.some(index => (currentTetrominoPosition + index) % width === numToCheck);
 		if(!isAtEdge && bLeft)
@@ -159,6 +159,20 @@ document.addEventListener('DOMContentLoaded', () => {
 		draw(); */
 	}
 
+	function rotate()
+	{
+		undraw();
+		if(currentTetrominoRotation + 1 < currentTetromino.length)
+		{
+			currentTetrominoRotation++;
+		}
+		else
+		{
+			currentTetrominoRotation = 0;
+		}
+		currentTetromino = theTetrominos[random][currentTetrominoRotation];
+		draw();
+	}
 	
 	
 	function handleInput(e)
@@ -173,9 +187,14 @@ document.addEventListener('DOMContentLoaded', () => {
 		{
 			moveLeft(false);
 		}
+		else if (e.keyCode === 38)
+		{
+			rotate();
+		}
 		else if(e.keyCode === 40)
 		{
 			// speed up the process.
+			moveDown();
 		}
 	}
 })
