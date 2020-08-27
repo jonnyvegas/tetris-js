@@ -115,6 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			draw();
 			displayShape();
 			addScore();
+			gameOver();
 		}
 	}
 	
@@ -267,11 +268,22 @@ document.addEventListener('DOMContentLoaded', () => {
 				scoreDisplay.innerHTML = score;
 				row.forEach(index => {
 					boardSquares[index].classList.remove('taken');
+					boardSquares[index].classList.remove('tetromino');
 				})
 				const squaresRemoved = boardSquares.splice(i, width);
-				console.log(score);
+				boardSquares = squaresRemoved.concat(boardSquares);
+				boardSquares.forEach(cell => grid.appendChild(cell));
 			}
 			//const row = [i, i]
+		}
+	}
+	
+	function gameOver()
+	{
+		if(currentTetromino.some(index => boardSquares[currentTetrominoPosition + index].classList.contains('taken')))
+		{
+			scoreDisplay.innerHTML = 'end';
+			clearInterval(timerId);
 		}
 	}
 	
