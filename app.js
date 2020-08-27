@@ -5,6 +5,8 @@ document.addEventListener('DOMContentLoaded', () => {
 	const scoreDisplay = document.querySelector('#score');
 	const startBtn = document.querySelector('#start-button');
 	
+	// Adding functionality to the button
+	startBtn.addEventListener('click', startButtonClicked);
 	document.addEventListener('keydown', handleInput);
 	
 	// Default value
@@ -224,14 +226,16 @@ document.addEventListener('DOMContentLoaded', () => {
 		displaySquares.forEach(square => 
 		{
 			square.classList.remove('tetromino');
-		})
+		});
 		upNextTetrominos[nextRandom].forEach(index => {
 			displaySquares[displayIndex + index].classList.add('tetromino');
 		});
 	}
 	
-		// Adding functionality to the button
-	startBtn.addEventListener('click' => {
+
+	
+	function startButtonClicked()
+	{
 		if(timerId)
 		{
 			clearInterval(timerId);
@@ -239,12 +243,13 @@ document.addEventListener('DOMContentLoaded', () => {
 		}
 		else
 		{
-			draw()
+			draw();
 			timerId = setInterval(moveDown, 1000);
 			nextRandom = Math.floor(Math.random() * theTetrominos.length);
+			displayShape();
 		}
-	});
-
+	}
+});
 
 
 
