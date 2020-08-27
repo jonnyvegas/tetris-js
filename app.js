@@ -187,6 +187,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		{
 			moveLeft(false);
 		}
+		// Up arrow key
 		else if (e.keyCode === 38)
 		{
 			rotate();
